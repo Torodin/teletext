@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import SideNavBar from './components/SideNavBar.js';
 import MainLayout from './components/MainLayout.js';
 import { Box, useApp, useInput } from 'ink';
-import { Option } from '@inkjs/ui';
-import { navOptionsMap, navOptions, defaultNavOption } from './config/navigation.js';
+import { Alert, Option } from '@inkjs/ui';
+import { baseSections, defaultSection, sectionsMap } from './config/navigation.js';
 import useCliDimensions from './helpers/useclidimensions.js';
 
 export default function App() {
 	const [columns, height] = useCliDimensions();
-	const [navOption, setNavOption] = useState<Option>(defaultNavOption);
+	const [sections] = useState(baseSections);
+	const [selectedSection, setSelectedSection] = useState<Option>(defaultSection);
 	const [maxLength, setMaxLength] = useState<number>(columns/6);   
 	const { exit } = useApp()
  
@@ -23,13 +24,15 @@ export default function App() {
 	}, [columns]);
 
 	const handleNavChange = (option: string) => {
-		setNavOption(navOptions.find(opt => opt.value === option) || defaultNavOption);
+		setSelectedSection(sections.find(opt => opt.value === option) || defaultSection);
 	}
+
+	const CurrentSection = sectionsMap.get(selectedSection);
 	
 	return (
 		<Box width={columns} height={height}>
 			<MainLayout>
-				<SideNavBar options={navOptions} onChange={handleNavChange}/>
+				<SideNavBar options={sections} onChange={handleNavChange}/>
 				<Box 
 					borderStyle={'single'}
 					flexDirection={'column'}
@@ -38,7 +41,13 @@ export default function App() {
 					paddingLeft={2}
 					paddingRight={2}
 				>
-					{navOptionsMap.get(navOption)?.apply(null, [{maxLength}]) || null}
+					{ 
+						CurrentSection ? (
+							<CurrentSection maxLength={maxLength} />
+						) : (
+							<Alert variant="error">Section not found</Alert>
+						)
+					}
 				</Box>
 			</MainLayout>
 		</Box>

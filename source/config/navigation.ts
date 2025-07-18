@@ -6,11 +6,11 @@ import SectionProps from "../components/sections/sectionprops.js";
 
 type NavConfig = Map<Option, ({maxLength}:SectionProps) => ReactElement>;
 
-export const navOptionsMap: NavConfig = new Map([
+export const sectionsMap: NavConfig = new Map([
   [ { label: 'F1', value: 'pane_one' }, F1Section ],
   [ { label: 'Another', value: 'pane_two'}, AnotherSection ]
 ])
 
-export const navOptions: Option[] = Array.from(navOptionsMap.keys());
+export const baseSections: Option[] = Array.from(sectionsMap.keys());
 
-export const defaultNavOption: Option = navOptions[0] as Option;
+export const defaultSection: Option = baseSections[0] as Option;
