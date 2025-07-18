@@ -21,6 +21,6 @@ meow(
 	},
 );
 
-process.stdout.write("\x1b[?1049h") // enter alternate buffer
+//process.stdout.write("\x1b[?1049h") // enter alternate buffer
 
 render ( <App /> )
