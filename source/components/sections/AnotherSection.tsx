@@ -1,7 +1,7 @@
 import { Text } from "ink";
 import BigText from "ink-big-text";
 import React from "react";
-import SectionProps from "./sectionprops.js";
+import SectionProps from "../../common/sectionprops.js";
 
 export default function AnotherSection({maxLength}: SectionProps) {
     return (

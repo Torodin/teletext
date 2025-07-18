@@ -1,7 +1,7 @@
 import { Text } from "ink";
 import BigText from "ink-big-text";
 import React, { useEffect, useState } from "react";
-import SectionProps from "./sectionprops.js";
+import SectionProps from "../../common/sectionprops.js";
 
 interface Meeting {
   meeting_key: number
@@ -41,7 +41,7 @@ export default function F1Section({maxLength}: SectionProps) {
     } else if (lastMetting) {
         return(
             <>
-                <BigText text="F1 Statistics" font="tiny" maxLength={maxLength}/>
+                <BigText text="F1 Statistics V1" font="tiny" maxLength={maxLength}/>
                 <Text>Last metting was {lastMetting.meeting_name}</Text>
             </>
         );
