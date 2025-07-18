@@ -1,17 +1,13 @@
-import { Box, Text } from "ink";
+import { Text } from "ink";
 import BigText from "ink-big-text";
 import React from "react";
+import SectionProps from "./sectionprops.js";
 
-export default function AnotherSection() {
+export default function AnotherSection({maxLength}: SectionProps) {
     return (
-        <Box
-            borderStyle={'single'}
-            flexDirection={'column'}
-            paddingLeft={4}
-            paddingRight={4}
-        >
-            <BigText text="Another Section"/>
+        <>
+            <BigText text="Another" font="tiny" maxLength={maxLength}/>
             <Text>I'm the second content area</Text>
-        </Box>
+        </>
     )
 }
