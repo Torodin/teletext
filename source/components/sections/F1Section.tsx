@@ -1,4 +1,4 @@
-import { Box, Text } from "ink";
+import { Box, Newline, Text } from "ink";
 import BigText from "ink-big-text";
 import React, { useEffect, useState } from "react";
 import SectionProps from "../../common/sectionprops.js";
@@ -142,15 +142,30 @@ export default function F1Section({maxLength, cache}: SectionProps) {
             <Text>Cargando...</Text>
         );
     }
-    else if (error) {
+    
+    if (error) {
         return (
-            React.createElement(Box, { flexDirection: "column", borderStyle: "round", borderColor: "red", padding: 1 },
-                React.createElement(Text, { color: "red", bold: true }, "⚠️ Error fetching F1 data:"),
-                React.createElement(Text, null, error)
-            )
+            <Box flexDirection="column" padding={1}>
+                
+                    <Box borderStyle={'single'} borderColor="red" padding={1}>
+                        <Text color="red" bold>
+                            <Text>Error fetching F1 data:</Text><Newline />
+                            <Text>{error}</Text>
+                        </Text>
+                    </Box>
+                <Text color="red">
+                    <Text>.____     \  /</Text><Newline />
+                    <Text> "Yg___    |/</Text><Newline />
+                    <Text> dY"__`$g,    ._</Text><Newline />
+                    <Text> $ '  `|$$,. / `$$tg,._.-.</Text><Newline />
+                    <Text>[?: () ;$%%%%%%%$%%%%4$ o $ig._</Text><Newline />
+                    <Text>    .__, `````````````  `-'</Text><Newline />
+                </Text>
+            </Box>
         )
     } 
-    else if (lastMetting && sessionResults?.length && drivers?.length) {
+    
+    if (lastMetting && sessionResults?.length && drivers?.length) {
         return(
             <>
                 <BigText text="F1 last results" font="tiny" maxLength={maxLength}/>
@@ -184,9 +199,9 @@ export default function F1Section({maxLength, cache}: SectionProps) {
                 </Box>
             </>
         );
-    } else {
-        return (
-            <Text>There is no data available</Text>
-        );
     }
+    
+    return (
+        <Text>There is no data available</Text>
+    );
 }
