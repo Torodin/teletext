@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import SideNavBar from './components/SideNavBar.js';
 import MainLayout from './components/MainLayout.js';
 import { Box, useApp, useInput, Text } from 'ink';
@@ -13,9 +13,10 @@ import { FlatCache } from 'flat-cache';
 
 export default function App() {
 	const [columns, height] = useCliDimensions();
-	const [maxLength, setMaxLength] = useState<number>(columns/6);   
+	const [maxLength, setMaxLength] = useState<number>(columns/6);
 
-	const [sectionsMap, setSectionsMap] = useState(baseSectionsMap);
+	//const [sectionsMap, setSectionsMap] = useState(baseSectionsMap);
+	const sectionsMapRef = useRef(baseSectionsMap);
 	const [sections, setSections] = useState(baseSections);
 	const [selectedSection, setSelectedSection] = useState<Option>(defaultSection);
 
@@ -70,14 +71,19 @@ export default function App() {
 		}
 
 		loadPlugins().then(({ loadedPlugins, errors }) => {
-			setSectionsMap((prev) => {
+			/*setSectionsMap((prev) => {
 				const newMap = new Map(prev);
 				for (const [key, value] of loadedPlugins) {
 					newMap.set(key, value);
 				}
-				return new Map(prev)
-			});
-			setSections(Array.from(loadedPlugins.keys()));
+				return newMap;
+			});*/
+			const sectionsMap = sectionsMapRef.current;
+			for (const [key, value] of loadedPlugins) {
+				sectionsMap.set(key, value);
+			} 
+			sectionsMapRef.current = sectionsMap
+			setSections(Array.from(sectionsMap.keys()));
 			setPluginErrors(errors);
 			setIsLoadingPlugins(false);
 		});
@@ -91,7 +97,7 @@ export default function App() {
 		setSelectedSection(sections.find(opt => opt.value === option) || defaultSection);
 	}
 
-	const CurrentSection = sectionsMap.get(selectedSection);
+	const CurrentSection = sectionsMapRef.current.get(selectedSection);
 	
 	if (isLoadingPlugins) {
 		return React.createElement(Text, null, "Cargando plugins...");
