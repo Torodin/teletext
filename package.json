@@ -18,10 +18,13 @@
 		"dist"
 	],
 	"dependencies": {
+		"@google-cloud/local-auth": "^2.1.0",
 		"@inkjs/ui": "^2.0.0",
 		"flat-cache": "^6.1.20",
+		"googleapis": "^105.0.0",
 		"ink": "^5",
 		"ink-big-text": "^2.0.0",
+		"ink-text-input": "^6.0.0",
 		"meow": "^11.0.0",
 		"node-persist": "^4.0.4",
 		"react": "^18.2.0"

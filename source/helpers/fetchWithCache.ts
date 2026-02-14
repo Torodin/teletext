@@ -22,6 +22,7 @@ export async function fetchWithCache<T, R = T>(
         
         data = await response.json();
         await cache.set(url, data);
+        cache.save();
     }
 
     const result = extractor(data);

@@ -1,9 +1,10 @@
 import { Box, Newline, Text } from "ink";
 import BigText from "ink-big-text";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SectionProps from "../../common/sectionprops.js";
 import { fetchWithCache } from "../../helpers/fetchWithCache.js";
 import { FlatCache } from "flat-cache";
+import { CacheContext } from "../../common/CacheContext.js";
 
 interface Meeting {
     meeting_key: number
@@ -110,7 +111,9 @@ async function getSessionDrivers(session_key: number, cache: FlatCache) {
     return fetchWithCache<Driver[]>(url, cache);
 }
 
-export default function F1Section({maxLength, cache}: SectionProps) {
+export default function F1Section({maxLength}: SectionProps) {
+    const cache = useContext(CacheContext);
+
     const [isLoading, setIsLoading] = useState(true);
     const [lastMetting, setLastMetting] = useState<Meeting>();
     const [sessionResults, setSessionResults] = useState<DriverResult[]>();

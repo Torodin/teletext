@@ -9,7 +9,14 @@ import useCliDimensions from './helpers/useclidimensions.js';
 import fs from 'fs';
 import path from 'path';
 import Plugin from './common/plugin.js';
+import { CacheContext } from './common/CacheContext.js';
 import { FlatCache } from 'flat-cache';
+
+const cache = new FlatCache({
+	ttl: 60 * 60 * 1000,
+	lruSize: 5000,
+	persistInterval: 5 * 1000 * 60,	
+})
 
 export default function App() {
 	const [columns, height] = useCliDimensions();
@@ -24,10 +31,6 @@ export default function App() {
 	const [pluginErrors, setPluginErrors] = useState<string[]>([]); // New state for plugin errors
 
 	const { exit } = useApp()
-	const cache = new FlatCache({
-		ttl: 60 * 60 * 1000,
-		lruSize: 5000	
-	});
  
 	useInput((input, key) => {
 	  if (input === "q" || key.escape) {
@@ -113,37 +116,39 @@ export default function App() {
 	return (
 		<Box width={columns} height={height}>
 			<MainLayout>
-				<SideNavBar options={sections} onChange={handleNavChange}/>
-				<Box 
-					borderStyle={'single'}
-					flexDirection={'column'}
-					justifyContent='center'
-					width="100%"
-					paddingLeft={2}
-					paddingRight={2}
-				>
-					{ 
-						CurrentSection ? (
-							cache ? (
-								<CurrentSection maxLength={maxLength} cache={cache}/>
+				<CacheContext.Provider value={cache}>
+					<SideNavBar options={sections} onChange={handleNavChange}/>
+					<Box 
+						borderStyle={'single'}
+						flexDirection={'column'}
+						justifyContent='center'
+						width="100%"
+						paddingLeft={2}
+						paddingRight={2}
+					>
+						{ 
+							CurrentSection ? (
+								cache ? (
+									<CurrentSection maxLength={maxLength}/>
+								) : (
+									<Alert variant="error">Section has not been loaded correctly because of cache manager for {selectedSection.value}</Alert>
+								)
 							) : (
-								<Alert variant="error">Section has not been loaded correctly because of cache manager for {selectedSection.value}</Alert>
+								<Alert variant="error">Section has not been loaded correctly</Alert>
 							)
-						) : (
-							<Alert variant="error">Section has not been loaded correctly</Alert>
-						)
-					}
-				</Box>
-				{pluginErrors.length > 0 ? (
-					<Box flexDirection="column" padding={1}>
-						<Text color="red">Errors loading plugins:</Text>
-						{
-							pluginErrors.map((error) => (
-								<Alert variant="error">{error}</Alert>
-							))
 						}
 					</Box>
-				) : null}
+					{pluginErrors.length > 0 ? (
+						<Box flexDirection="column" padding={1}>
+							<Text color="red">Errors loading plugins:</Text>
+							{
+								pluginErrors.map((error) => (
+									<Alert variant="error">{error}</Alert>
+								))
+							}
+						</Box>
+					) : null}
+				</CacheContext.Provider>
 			</MainLayout>
 		</Box>
 	);

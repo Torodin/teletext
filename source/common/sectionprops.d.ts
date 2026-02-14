@@ -3,5 +3,4 @@ import CacheManager from "../helpers/fetchWithCache.ts";
 
 export default interface SectionProps {
     maxLength: number;
-    cache: FlatCache;
 }
