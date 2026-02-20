@@ -78,7 +78,7 @@ function sortDriverResults(a: DriverResult, b: DriverResult) {
         const priorityB = getStatusPriority(b);
         return priorityA - priorityB;
     }
-};
+}
 
 function getStatusPriority(driverResult: DriverResult) {
     if (driverResult.dnf) return 2; // DNF comes second
@@ -90,13 +90,13 @@ function getStatusPriority(driverResult: DriverResult) {
 async function getLastMeeting(cache: FlatCache) {
     const url = `https://api.openf1.org/v1/meetings?meeting_key=latest`;
 
-    return fetchWithCache<Meeting[], Meeting>(url, cache, meetings => meetings[0]);
+    return fetchWithCache<Meeting[], Meeting>(url, cache, meetings => meetings?.[0]);
 }
 
 async function getRaceSession(meeting_key: number, cache: FlatCache) {
     const url = `https://api.openf1.org/v1/sessions?meeting_key=${meeting_key}&session_type=Race`;
 
-    return fetchWithCache<Session[], Session>(url, cache, sessions => sessions[0]);
+    return fetchWithCache<Session[], Session>(url, cache, sessions => sessions?.[0]);
 }
 
 async function getSessionResults(session_key: number, cache: FlatCache) {
@@ -140,7 +140,12 @@ export default function F1Section({maxLength}: SectionProps) {
         fetchData()
     }, []);
 
-    if (isLoading && !lastMetting && !sessionResults?.length && !drivers?.length) {
+    if (
+        isLoading && 
+        !lastMetting && 
+        !sessionResults?.length && 
+        !drivers?.length
+    ) {
         return (
             <Text>Cargando...</Text>
         );
