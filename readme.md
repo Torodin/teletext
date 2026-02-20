@@ -2,7 +2,7 @@
 
 A terminal-based dashboard application that displays personalized information in modules, similar to old-school TV teletext services. Built with React and Ink for a rich CLI experience.
 
-![Teletext Demo](https://via.placeholder.com/800x400?text=Teletext+CLI+Dashboard)
+![Teletext Demo](demo/demo.gif)
 
 ## Features
 
@@ -22,7 +22,7 @@ A terminal-based dashboard application that displays personalized information in
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/teletext.git
+git clone https://github.com/Torodin/teletext.git
 cd teletext
 
 # Install dependencies
